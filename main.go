@@ -3,15 +3,16 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-
+	"net/http"
 	"boot.dev/linko/internal/store"
 )
 
+var logger = log.New(os.Stderr, "DEBUG: ", log.LstdFlags)
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 
@@ -27,7 +28,7 @@ func main() {
 func run(ctx context.Context, cancel context.CancelFunc, httpPort int, dataDir string) int {
 	st, err := store.New(dataDir)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to create store: %v\n", err)
+		logger.Printf("failed to create store: %v", err)
 		return 1
 	}
 	s := newServer(*st, httpPort, cancel)
@@ -41,12 +42,21 @@ func run(ctx context.Context, cancel context.CancelFunc, httpPort int, dataDir s
 	defer cancel()
 
 	if err := s.shutdown(shutdownCtx); err != nil {
-		fmt.Fprintf(os.Stderr, "failed to shutdown server: %v\n", err)
+		logger.Printf("failed to shutdown server: %v", err)
 		return 1
 	}
 	if serverErr != nil {
-		fmt.Fprintf(os.Stderr, "server error: %v\n", serverErr)
+		logger.Printf("server error: %v", serverErr)
 		return 1
 	}
 	return 0
+}
+
+func requestLogger(logger *log.Logger) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			next.ServeHTTP(w, r)
+			logger.Printf("Served request: %s %s", r.Method, r.URL.Path)
+		})
+	}
 }
