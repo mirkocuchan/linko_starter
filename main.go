@@ -27,6 +27,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus"
 	"strconv"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+    "go.opentelemetry.io/otel/trace"
 )
 
 func main() {
@@ -40,8 +45,19 @@ func main() {
 	cancel()
 	os.Exit(status)
 }
-
+var tracer trace.Tracer
 func run(ctx context.Context, cancel context.CancelFunc, httpPort int, dataDir string) int {
+	closeTracing, err := initTracing(ctx)
+    if err != nil {
+        slog.Error("failed to initialize tracing", "error", err)
+        return 1
+    }
+    defer func() {
+        if err := closeTracing(context.Background()); err != nil {
+            fmt.Fprintln(os.Stderr, err)
+        }
+    }()
+
 	logger, closeLogger, err := initializeLogger(os.Getenv("LINKO_LOG_FILE"))
 	if err != nil {
 		slog.Error("failed to initialize logger", "error", err)
@@ -376,4 +392,24 @@ func metricsMiddleware(next http.Handler) http.Handler {
 			WithLabelValues(method, path, status).
 			Inc()
 	})
+}
+
+func initTracing(ctx context.Context) (func(context.Context) error, error) {
+	
+	exp, err := otlptracegrpc.New(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithBatcher(exp,
+			sdktrace.WithBatchTimeout(2*time.Second),
+		),
+		sdktrace.WithResource(resource.Default()),
+	)
+
+	otel.SetTracerProvider(tp)
+	tracer = tp.Tracer("boot.dev/linko")
+
+	return tp.Shutdown, nil
 }

@@ -1,0 +1,50 @@
+File: linko
+Build ID: fd24d07a17e784ee5b5811e19b8362d07d30266d
+Type: inuse_space
+Time: 2026-07-16 15:02:04 UTC
+Duration: 29.84s, Total samples = 3132.93kB 
+Showing nodes accounting for 2035.24kB, 64.96% of 3132.93kB total
+      flat  flat%   sum%        cum   cum%
+ 1045.40kB 33.37% 33.37%  1045.40kB 33.37%  internal/bytealg.MakeNoZero
+ -548.84kB 17.52% 15.85%  -548.84kB 17.52%  compress/flate.(*compressor).initDeflate (inline)
+     514kB 16.41% 32.26%      514kB 16.41%  bufio.NewWriterSize (inline)
+  512.56kB 16.36% 48.62%   512.56kB 16.36%  bufio.(*Scanner).Text (inline)
+  512.12kB 16.35% 64.96%   512.12kB 16.35%  internal/profile.(*Profile).postDecode
+         0     0% 64.96%  -548.84kB 17.52%  bufio.(*Writer).Flush
+         0     0% 64.96%      514kB 16.41%  bufio.NewWriter (inline)
+         0     0% 64.96%  -548.84kB 17.52%  compress/flate.(*compressor).init
+         0     0% 64.96%  -548.84kB 17.52%  compress/flate.NewWriter (inline)
+         0     0% 64.96%  -548.84kB 17.52%  compress/gzip.(*Writer).Write
+         0     0% 64.96%   512.56kB 16.36%  github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1
+         0     0% 64.96%   512.56kB 16.36%  github.com/prometheus/client_golang/prometheus.(*processCollector).Collect
+         0     0% 64.96%   512.56kB 16.36%  github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect
+         0     0% 64.96%   -34.84kB  1.11%  github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1
+         0     0% 64.96%   -34.84kB  1.11%  github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1
+         0     0% 64.96%   -34.84kB  1.11%  github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1
+         0     0% 64.96%   -34.84kB  1.11%  github.com/prometheus/common/expfmt.MetricFamilyToText
+         0     0% 64.96%  -548.84kB 17.52%  github.com/prometheus/common/expfmt.MetricFamilyToText.func1
+         0     0% 64.96%   -34.84kB  1.11%  github.com/prometheus/common/expfmt.NewEncoder.func7
+         0     0% 64.96%   -34.84kB  1.11%  github.com/prometheus/common/expfmt.encoderCloser.Encode
+         0     0% 64.96%      514kB 16.41%  github.com/prometheus/common/expfmt.init.func1
+         0     0% 64.96%   512.56kB 16.36%  github.com/prometheus/procfs.FS.Stat
+         0     0% 64.96%   512.56kB 16.36%  github.com/prometheus/procfs.ProcStat.StartTime
+         0     0% 64.96%   512.56kB 16.36%  github.com/prometheus/procfs.parseStat
+         0     0% 64.96%   512.12kB 16.35%  internal/profile.Parse
+         0     0% 64.96%   512.12kB 16.35%  internal/profile.parseUncompressed
+         0     0% 64.96%  1045.40kB 33.37%  main.(*server).handlerRedirect
+         0     0% 64.96%   512.12kB 16.35%  main.newServer.(*server).authMiddleware.func9
+         0     0% 64.96%  1522.68kB 48.60%  main.newServer.metricsMiddleware.func2
+         0     0% 64.96%  1522.68kB 48.60%  main.newServer.newServer.requestLogger.func1.func4
+         0     0% 64.96%  1522.68kB 48.60%  main.newServer.requestIDMiddleware.func3
+         0     0% 64.96%  1522.68kB 48.60%  net/http.(*ServeMux).ServeHTTP
+         0     0% 64.96%  1522.68kB 48.60%  net/http.(*conn).serve
+         0     0% 64.96%  1522.68kB 48.60%  net/http.HandlerFunc.ServeHTTP
+         0     0% 64.96%  1522.68kB 48.60%  net/http.serverHandler.ServeHTTP
+         0     0% 64.96%   512.12kB 16.35%  net/http/pprof.Index
+         0     0% 64.96%   512.12kB 16.35%  net/http/pprof.collectProfile
+         0     0% 64.96%   512.12kB 16.35%  net/http/pprof.handler.ServeHTTP
+         0     0% 64.96%   512.12kB 16.35%  net/http/pprof.handler.serveDeltaProfile
+         0     0% 64.96%  1045.40kB 33.37%  strings.(*Builder).Grow
+         0     0% 64.96%  1045.40kB 33.37%  strings.(*Builder).grow
+         0     0% 64.96%  1045.40kB 33.37%  strings.Repeat
+         0     0% 64.96%      514kB 16.41%  sync.(*Pool).Get
